@@ -9,8 +9,9 @@ export default function MiniTimer() {
 
   // 타이머 페이지에서는 미니 타이머 숨김
   if (location.pathname === '/timer') return null;
-  // 타이머가 동작 중이 아니고 리셋 상태면 숨김
-  if (!isRunning && timeLeft === 25 * 60 && mode === 'focus') return null;
+  // 완전 초기 상태(한번도 시작 안 함)에서만 숨김
+  const isInitialState = !isRunning && timeLeft === 25 * 60 && mode === 'focus';
+  if (isInitialState) return null;
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
