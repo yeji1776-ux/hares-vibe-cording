@@ -4,17 +4,18 @@ import { ko } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import DayCell from './DayCell';
 import StudyLog from './StudyLog';
-import type { StudyRecord } from '../../types';
+import type { StudyRecord, BookQuestion } from '../../types';
 
 interface Props {
   records: StudyRecord[];
   hasStudied: (date: string) => boolean;
   getRecord: (date: string) => StudyRecord | undefined;
+  bookQuestions?: BookQuestion[];
 }
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
-export default function CalendarGrid({ records, hasStudied, getRecord }: Props) {
+export default function CalendarGrid({ records, hasStudied, getRecord, bookQuestions = [] }: Props) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
@@ -84,7 +85,7 @@ export default function CalendarGrid({ records, hasStudied, getRecord }: Props) 
       </div>
 
       {selectedDate && (
-        <StudyLog date={selectedDate} record={getRecord(selectedDate)} />
+        <StudyLog date={selectedDate} record={getRecord(selectedDate)} bookQuestions={bookQuestions} />
       )}
     </div>
   );

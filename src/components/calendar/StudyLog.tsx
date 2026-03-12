@@ -1,15 +1,17 @@
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import type { StudyRecord } from '../../types';
+import type { StudyRecord, BookQuestion } from '../../types';
 
 interface Props {
   date: string;
   record: StudyRecord | undefined;
+  bookQuestions?: BookQuestion[];
 }
 
-export default function StudyLog({ date, record }: Props) {
+export default function StudyLog({ date, record, bookQuestions = [] }: Props) {
   const dateObj = new Date(date + 'T00:00:00');
   const formatted = format(dateObj, 'M월 d일 (EEEE)', { locale: ko });
+  const dayPhotos = bookQuestions.filter(q => q.createdAt === date);
 
   return (
     <div className="bg-white rounded-2xl p-4 shadow-sm animate-fade-in">
@@ -29,6 +31,22 @@ export default function StudyLog({ date, record }: Props) {
               </span>
             </div>
           ))}
+        </div>
+      )}
+
+      {dayPhotos.length > 0 && (
+        <div className="mt-4 pt-3 border-t border-gray-100">
+          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-3">
+            📸 책 사진 질문
+          </h4>
+          <div className="space-y-2">
+            {dayPhotos.map(q => (
+              <div key={q.id} className="bg-gray-50 rounded-xl p-2">
+                <img src={q.imageDataUrl} alt="책 사진" className="w-full rounded-lg mb-1" />
+                {q.question && <p className="text-xs text-gray-600">❓ {q.question}</p>}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

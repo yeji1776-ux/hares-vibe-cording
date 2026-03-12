@@ -3,6 +3,7 @@ import { Trash2 } from 'lucide-react';
 import PageWrapper from '../components/layout/PageWrapper';
 import PhotoUploader from '../components/bookqa/PhotoUploader';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useStudyTracker } from '../hooks/useStudyTracker';
 import { STORAGE_KEYS } from '../utils/storageKeys';
 import type { BookQuestion } from '../types';
 
@@ -10,6 +11,7 @@ export default function BookQAPage() {
   const [questions, setQuestions] = useLocalStorage<BookQuestion[]>(STORAGE_KEYS.BOOK_QUESTIONS, []);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [questionText, setQuestionText] = useState('');
+  const { logActivity } = useStudyTracker();
 
   const handleSubmit = () => {
     if (!currentImage) return;
@@ -21,6 +23,7 @@ export default function BookQAPage() {
       createdAt: new Date().toISOString().split('T')[0],
     };
     setQuestions(prev => [newQ, ...prev]);
+    logActivity('book-qa', '책 사진 질문: ' + (questionText.trim() || '사진으로 질문'));
     setCurrentImage(null);
     setQuestionText('');
   };

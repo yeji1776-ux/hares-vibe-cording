@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, RotateCcw } from 'lucide-react';
+import { Send, Bot, User, RotateCcw, Bookmark, Trash2 } from 'lucide-react';
 import PageWrapper from '../components/layout/PageWrapper';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
@@ -8,6 +8,12 @@ interface Message {
   role: 'user' | 'bot';
   content: string;
   timestamp: number;
+}
+
+interface SavedSnippet {
+  id: string;
+  content: string;
+  savedAt: number;
 }
 
 const WELCOME_MESSAGE: Message = {
@@ -147,13 +153,36 @@ function getResponse(input: string): string {
 
 export default function ChatbotPage() {
   const [messages, setMessages] = useLocalStorage<Message[]>('cording-chat-messages', [WELCOME_MESSAGE]);
+  const [bookmarks, setBookmarks] = useLocalStorage<SavedSnippet[]>('cording-chat-bookmarks', []);
   const [input, setInput] = useState('');
+  const [activeTab, setActiveTab] = useState<'chat' | 'saved'>('chat');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const isBookmarked = (content: string) => {
+    return bookmarks.some(b => b.content === content);
+  };
+
+  const toggleBookmark = (content: string) => {
+    if (isBookmarked(content)) {
+      setBookmarks(prev => prev.filter(b => b.content !== content));
+    } else {
+      const newSnippet: SavedSnippet = {
+        id: crypto.randomUUID(),
+        content,
+        savedAt: Date.now(),
+      };
+      setBookmarks(prev => [...prev, newSnippet]);
+    }
+  };
+
+  const deleteBookmark = (id: string) => {
+    setBookmarks(prev => prev.filter(b => b.id !== id));
+  };
 
   const sendMessage = (text: string) => {
     if (!text.trim()) return;
@@ -187,75 +216,167 @@ export default function ChatbotPage() {
     setMessages([WELCOME_MESSAGE]);
   };
 
+  const formatDate = (timestamp: number) => {
+    const d = new Date(timestamp);
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  };
+
   return (
     <PageWrapper title="대화하며 배우기" subtitle="궁금한 건 뭐든 물어보세요! 🐰">
-      {/* Quick Questions */}
-      <div className="flex gap-2 overflow-x-auto pb-3 mb-3 scrollbar-hide">
-        {QUICK_QUESTIONS.map(q => (
-          <button
-            key={q}
-            onClick={() => sendMessage(q)}
-            className="px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-xs whitespace-nowrap hover:bg-indigo-100 transition-colors"
-          >
-            {q}
-          </button>
-        ))}
+      {/* Tab Toggle */}
+      <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-3">
+        <button
+          onClick={() => setActiveTab('chat')}
+          className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${
+            activeTab === 'chat'
+              ? 'bg-white text-indigo-600 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          대화
+        </button>
+        <button
+          onClick={() => setActiveTab('saved')}
+          className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors relative ${
+            activeTab === 'saved'
+              ? 'bg-white text-indigo-600 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          저장됨
+          {bookmarks.length > 0 && (
+            <span className="ml-1.5 inline-flex items-center justify-center w-5 h-5 text-xs bg-indigo-100 text-indigo-600 rounded-full">
+              {bookmarks.length}
+            </span>
+          )}
+        </button>
       </div>
 
-      {/* Chat Messages */}
-      <div className="bg-white rounded-2xl shadow-sm p-4 mb-3 h-[55vh] md:h-[65vh] overflow-y-auto">
-        <div className="space-y-4">
-          {messages.map(msg => (
-            <div
-              key={msg.id}
-              className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
-            >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                msg.role === 'bot' ? 'bg-indigo-100' : 'bg-gray-100'
-              }`}>
-                {msg.role === 'bot' ? <Bot size={16} className="text-indigo-600" /> : <User size={16} className="text-gray-600" />}
-              </div>
-              <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
-                  msg.role === 'bot'
-                    ? 'bg-gray-50 text-gray-700'
-                    : 'bg-indigo-600 text-white'
-                }`}
+      {activeTab === 'chat' ? (
+        <>
+          {/* Quick Questions */}
+          <div className="flex gap-2 overflow-x-auto pb-3 mb-3 scrollbar-hide">
+            {QUICK_QUESTIONS.map(q => (
+              <button
+                key={q}
+                onClick={() => sendMessage(q)}
+                className="px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-full text-xs whitespace-nowrap hover:bg-indigo-100 transition-colors"
               >
-                {msg.content}
-              </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
+                {q}
+              </button>
+            ))}
+          </div>
 
-      {/* Input Area */}
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <button
-          type="button"
-          onClick={handleReset}
-          className="p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors shrink-0"
-          title="대화 초기화"
-        >
-          <RotateCcw size={18} className="text-gray-500" />
-        </button>
-        <input
-          ref={inputRef}
-          type="text"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="궁금한 걸 물어보세요..."
-          className="flex-1 px-4 py-3 bg-white rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
-        />
-        <button
-          type="submit"
-          disabled={!input.trim()}
-          className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
-        >
-          <Send size={18} />
-        </button>
-      </form>
+          {/* Chat Messages */}
+          <div className="bg-white rounded-2xl shadow-sm p-4 mb-3 h-[55vh] md:h-[65vh] overflow-y-auto">
+            <div className="space-y-4">
+              {messages.map(msg => (
+                <div
+                  key={msg.id}
+                  className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
+                >
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                    msg.role === 'bot' ? 'bg-indigo-100' : 'bg-gray-100'
+                  }`}>
+                    {msg.role === 'bot' ? <Bot size={16} className="text-indigo-600" /> : <User size={16} className="text-gray-600" />}
+                  </div>
+                  <div className="relative group max-w-[80%]">
+                    <div
+                      className={`rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
+                        msg.role === 'bot'
+                          ? 'bg-gray-50 text-gray-700'
+                          : 'bg-indigo-600 text-white'
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+                    {msg.role === 'bot' && (
+                      <button
+                        onClick={() => toggleBookmark(msg.content)}
+                        className={`absolute top-2 right-2 p-1 rounded-md transition-all ${
+                          isBookmarked(msg.content)
+                            ? 'opacity-100 bg-indigo-100 text-indigo-600'
+                            : 'opacity-0 group-hover:opacity-100 bg-white/80 text-gray-400 hover:text-indigo-600'
+                        }`}
+                        title={isBookmarked(msg.content) ? '북마크 해제' : '북마크 저장'}
+                      >
+                        <Bookmark
+                          size={14}
+                          fill={isBookmarked(msg.content) ? 'currentColor' : 'none'}
+                        />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
+
+          {/* Input Area */}
+          <form onSubmit={handleSubmit} className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleReset}
+              className="p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors shrink-0"
+              title="대화 초기화"
+            >
+              <RotateCcw size={18} className="text-gray-500" />
+            </button>
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="궁금한 걸 물어보세요..."
+              className="flex-1 px-4 py-3 bg-white rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            />
+            <button
+              type="submit"
+              disabled={!input.trim()}
+              className="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+            >
+              <Send size={18} />
+            </button>
+          </form>
+        </>
+      ) : (
+        /* Saved Snippets View */
+        <div className="bg-white rounded-2xl shadow-sm p-4 h-[55vh] md:h-[65vh] overflow-y-auto">
+          {bookmarks.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-gray-400">
+              <Bookmark size={48} className="mb-3 opacity-30" />
+              <p className="text-sm font-medium mb-1">저장된 메시지가 없어요</p>
+              <p className="text-xs text-gray-300">대화 중 봇 메시지의 북마크 아이콘을 눌러 저장하세요</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {bookmarks.map(snippet => (
+                <div
+                  key={snippet.id}
+                  className="bg-gray-50 rounded-xl p-4 relative group"
+                >
+                  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap pr-8">
+                    {snippet.content}
+                  </div>
+                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
+                    <span className="text-xs text-gray-400">
+                      {formatDate(snippet.savedAt)}
+                    </span>
+                    <button
+                      onClick={() => deleteBookmark(snippet.id)}
+                      className="p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      title="삭제"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </PageWrapper>
   );
 }

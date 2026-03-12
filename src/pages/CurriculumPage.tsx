@@ -3,11 +3,13 @@ import { ChevronDown, ChevronRight, CheckCircle2, Circle, Clock, Lightbulb, Wren
 import PageWrapper from '../components/layout/PageWrapper';
 import { curriculum } from '../data/curriculumData';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import type { BookQuestion } from '../types';
 
 export default function CurriculumPage() {
   const [completedDays, setCompletedDays] = useLocalStorage<number[]>('cording-completed-days', []);
   const [bookmarkedDays, setBookmarkedDays] = useLocalStorage<number[]>('cording-bookmarked-days', []);
   const [dayNotes, setDayNotes] = useLocalStorage<Record<number, string>>('cording-day-notes', {});
+  const [bookQuestions] = useLocalStorage<BookQuestion[]>('cording-book-questions', []);
   const [expandedMonth, setExpandedMonth] = useState<number>(1);
   const [expandedWeek, setExpandedWeek] = useState<number | null>(1);
   const [viewingDay, setViewingDay] = useState<number | null>(null);
@@ -188,6 +190,28 @@ export default function CurriculumPage() {
             <p className="text-[10px] text-gray-400 mt-1">자동 저장됨</p>
           )}
         </div>
+
+        {/* Book QA photos for today */}
+        {(() => {
+          const todayStr = new Date().toISOString().split('T')[0];
+          const dayPhotos = bookQuestions.filter(q => q.createdAt === todayStr);
+          if (dayPhotos.length === 0) return null;
+          return (
+            <div className="bg-white rounded-2xl p-4 shadow-sm mb-4">
+              <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-3">
+                📸 오늘 찍은 책 사진
+              </h4>
+              <div className="space-y-2">
+                {dayPhotos.map(q => (
+                  <div key={q.id} className="bg-gray-50 rounded-xl p-2">
+                    <img src={q.imageDataUrl} alt="책 사진" className="w-full rounded-lg mb-1" />
+                    {q.question && <p className="text-xs text-gray-600">❓ {q.question}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Navigation */}
         <div className="flex gap-2">
