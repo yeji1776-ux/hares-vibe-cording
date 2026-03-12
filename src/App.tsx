@@ -18,7 +18,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <main className="md:pt-12">
+      <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/dictionary" element={<DictionaryPage />} />

@@ -124,14 +124,27 @@ export default function CurriculumPage() {
           <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5 mb-3">
             <Clock size={14} /> 오늘의 할 일
           </h4>
-          <ul className="space-y-2">
-            {dayData.tasks.map((task, i) => (
-              <li key={i} className="text-sm text-gray-700 flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg">
-                <span className="text-indigo-400 mt-0.5 shrink-0">•</span>
-                {task}
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-2">
+            {dayData.tasks.map((t, i) => {
+              const taskObj = typeof t === 'string' ? { task: t, detail: '' } : t;
+              return (
+                <details key={i} className="group bg-gray-50 rounded-xl overflow-hidden">
+                  <summary className="flex items-start gap-2 p-3 cursor-pointer list-none text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                    <span className="text-indigo-400 mt-0.5 shrink-0">•</span>
+                    <span className="flex-1">{taskObj.task}</span>
+                    {taskObj.detail && (
+                      <span className="text-gray-300 group-open:rotate-180 transition-transform shrink-0 mt-0.5">▼</span>
+                    )}
+                  </summary>
+                  {taskObj.detail && (
+                    <div className="px-4 pb-3 pt-0 ml-5 text-xs text-gray-500 leading-relaxed border-t border-gray-100 mt-0 pt-2">
+                      {taskObj.detail}
+                    </div>
+                  )}
+                </details>
+              );
+            })}
+          </div>
         </div>
 
         {/* Tools */}
