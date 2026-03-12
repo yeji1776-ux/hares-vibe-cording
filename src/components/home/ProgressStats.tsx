@@ -45,14 +45,16 @@ export default function ProgressStats() {
   ];
 
   return (
-    <div className="grid grid-cols-4 gap-2 mb-4">
+    <div className="flex gap-2 mb-4 overflow-x-auto">
       {stats.map(({ icon: Icon, label, value, color }) => (
-        <div key={label} className="bg-white rounded-xl p-3 shadow-sm text-center">
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-1.5 ${color}`}>
-            <Icon size={16} />
+        <div key={label} className="flex items-center gap-1.5 bg-white rounded-lg px-2.5 py-1.5 shadow-sm flex-shrink-0">
+          <div className={`w-6 h-6 rounded-md flex items-center justify-center ${color}`}>
+            <Icon size={12} />
           </div>
-          <p className="text-sm font-bold text-gray-800">{value}</p>
-          <p className="text-[10px] text-gray-400">{label}</p>
+          <div>
+            <p className="text-xs font-bold text-gray-800 leading-tight">{value}</p>
+            <p className="text-[9px] text-gray-400 leading-tight">{label}</p>
+          </div>
         </div>
       ))}
     </div>

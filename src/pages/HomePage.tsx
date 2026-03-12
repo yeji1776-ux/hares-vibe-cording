@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, Award, FileCode, Timer, CheckCircle2, BookOpen } from 'lucide-react';
+import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, Award, FileCode, Timer, CheckCircle2, BookOpen, Bookmark } from 'lucide-react';
+import { useTimer } from '../contexts/TimerContext';
 import type { LucideIcon } from 'lucide-react';
 import ProgressStats from '../components/home/ProgressStats';
 import { useStudyTracker } from '../hooks/useStudyTracker';
@@ -43,7 +44,6 @@ const categories: Category[] = [
     title: '기록하기',
     emoji: '✏️',
     items: [
-      { to: '/timer', icon: Timer, label: '학습 타이머', desc: '25분 집중 뽀모도로!', color: 'bg-cyan-100 text-cyan-600' },
       { to: '/calendar', icon: Calendar, label: '학습 달력', desc: '공부한 날을 기록해요', color: 'bg-blue-100 text-blue-600' },
       { to: '/portfolio', icon: FolderOpen, label: '내 웹앱 모음', desc: '만든 작품을 정리해요', color: 'bg-green-100 text-green-600' },
       { to: '/book-qa', icon: Camera, label: '책 사진 질문', desc: '모르는 부분을 사진으로 질문', color: 'bg-rose-100 text-rose-600' },
@@ -60,6 +60,7 @@ const categories: Category[] = [
 
 export default function HomePage() {
   const { logActivity, hasStudied } = useStudyTracker();
+  const { mode, timeLeft, isRunning } = useTimer();
   const today = new Date().toISOString().split('T')[0];
   const checkedIn = hasStudied(today) && (() => {
     const rec = JSON.parse(localStorage.getItem('cording-study-records') || '[]');
@@ -74,35 +75,48 @@ export default function HomePage() {
   };
 
   const isChecked = checkedIn || justChecked;
+  const timerMin = Math.floor(timeLeft / 60);
+  const timerSec = timeLeft % 60;
 
   return (
     <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 md:px-6 pt-4 pb-24 md:pb-8">
-      <p className="text-gray-500 mb-4">오늘도 바이브코딩 화이팅!</p>
+      <p className="text-gray-500 mb-3">오늘도 바이브코딩 화이팅!</p>
 
-      {/* 출석체크 */}
-      <button
-        onClick={handleCheckIn}
-        disabled={isChecked}
-        className={`w-full mb-4 rounded-2xl p-4 shadow-sm flex items-center gap-3 transition-all ${
-          isChecked
-            ? 'bg-green-50 border-2 border-green-300'
-            : 'bg-white border-2 border-dashed border-indigo-300 hover:border-indigo-400 hover:shadow-md active:scale-[0.98]'
-        }`}
-      >
-        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-          isChecked ? 'bg-green-100' : 'bg-indigo-100'
-        }`}>
-          <CheckCircle2 size={24} className={isChecked ? 'text-green-500' : 'text-indigo-400'} />
-        </div>
-        <div className="text-left">
-          <p className={`font-bold ${isChecked ? 'text-green-600' : 'text-gray-800'}`}>
-            {isChecked ? '오늘 출석 완료!' : '오늘의 출석체크'}
-          </p>
-          <p className="text-xs text-gray-400">
-            {isChecked ? '오늘도 열심히 공부해요!' : '버튼을 눌러 출석 도장을 찍어요!'}
-          </p>
-        </div>
-      </button>
+      {/* 퀵 액션: 출석 + 북마크 + 타이머 */}
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        <button
+          onClick={handleCheckIn}
+          disabled={isChecked}
+          className={`flex flex-col items-center justify-center rounded-xl py-2.5 shadow-sm transition-all ${
+            isChecked
+              ? 'bg-green-50 border border-green-300'
+              : 'bg-white border border-dashed border-indigo-300 active:scale-95'
+          }`}
+        >
+          <CheckCircle2 size={20} className={isChecked ? 'text-green-500' : 'text-indigo-400'} />
+          <span className={`text-[11px] font-bold mt-1 ${isChecked ? 'text-green-600' : 'text-gray-700'}`}>
+            {isChecked ? '출석완료' : '출석체크'}
+          </span>
+        </button>
+
+        <Link
+          to="/chatbot"
+          className="flex flex-col items-center justify-center rounded-xl py-2.5 bg-white shadow-sm border border-gray-100 no-underline"
+        >
+          <Bookmark size={20} className="text-amber-500" />
+          <span className="text-[11px] font-bold mt-1 text-gray-700">북마크</span>
+        </Link>
+
+        <Link
+          to="/timer"
+          className="flex flex-col items-center justify-center rounded-xl py-2.5 bg-white shadow-sm border border-gray-100 no-underline"
+        >
+          <Timer size={20} className={isRunning ? (mode === 'focus' ? 'text-indigo-500' : 'text-green-500') : 'text-cyan-500'} />
+          <span className={`text-[11px] font-bold mt-1 tabular-nums ${isRunning ? 'text-indigo-600' : 'text-gray-700'}`}>
+            {isRunning ? `${String(timerMin).padStart(2,'0')}:${String(timerSec).padStart(2,'0')}` : '타이머'}
+          </span>
+        </Link>
+      </div>
 
       <ProgressStats />
 
