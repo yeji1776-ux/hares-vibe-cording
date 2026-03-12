@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, Award, FileCode, Timer, CheckCircle2 } from 'lucide-react';
+import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, Award, FileCode, Timer, CheckCircle2, BookOpen } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import ProgressStats from '../components/home/ProgressStats';
 import { useStudyTracker } from '../hooks/useStudyTracker';
@@ -27,6 +27,7 @@ const categories: Category[] = [
       { to: '/curriculum', icon: GraduationCap, label: '3개월 커리큘럼', desc: '매일 바이브코딩 마스터!', color: 'bg-indigo-100 text-indigo-600' },
       { to: '/chatbot', icon: MessageCircle, label: '대화하며 배우기', desc: '챗봇에게 뭐든 물어봐요!', color: 'bg-teal-100 text-teal-600' },
       { to: '/quiz', icon: Sparkles, label: '오늘의 퀴즈', desc: '배운 용어를 퀴즈로 복습!', color: 'bg-amber-100 text-amber-600' },
+      { to: '/lectures', icon: BookOpen, label: '교안 자료', desc: '주차별 강의 슬라이드!', color: 'bg-purple-100 text-purple-600' },
     ],
   },
   {

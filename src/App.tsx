@@ -15,6 +15,7 @@ import QuizPage from './pages/QuizPage';
 import BadgesPage from './pages/BadgesPage';
 import CheatsheetPage from './pages/CheatsheetPage';
 import TimerPage from './pages/TimerPage';
+import LecturesPage from './pages/LecturesPage';
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/badges" element={<BadgesPage />} />
           <Route path="/cheatsheet" element={<CheatsheetPage />} />
           <Route path="/timer" element={<TimerPage />} />
+          <Route path="/lectures" element={<LecturesPage />} />
         </Routes>
       </main>
       <MiniTimer />
