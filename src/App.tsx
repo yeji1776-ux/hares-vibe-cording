@@ -22,6 +22,7 @@ export default function App() {
     <TimerProvider>
     <div className="min-h-screen bg-gray-50">
       <Header />
+      <BottomNav />
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -40,7 +41,6 @@ export default function App() {
         </Routes>
       </main>
       <MiniTimer />
-      <BottomNav />
     </div>
     </TimerProvider>
   );
