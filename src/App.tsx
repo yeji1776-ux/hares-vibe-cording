@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
 import BottomNav from './components/layout/BottomNav';
+import { TimerProvider } from './contexts/TimerContext';
+import MiniTimer from './components/timer/MiniTimer';
 import HomePage from './pages/HomePage';
 import DictionaryPage from './pages/DictionaryPage';
 import CalendarPage from './pages/CalendarPage';
@@ -16,6 +18,7 @@ import TimerPage from './pages/TimerPage';
 
 export default function App() {
   return (
+    <TimerProvider>
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main>
@@ -34,7 +37,9 @@ export default function App() {
           <Route path="/timer" element={<TimerPage />} />
         </Routes>
       </main>
+      <MiniTimer />
       <BottomNav />
     </div>
+    </TimerProvider>
   );
 }
