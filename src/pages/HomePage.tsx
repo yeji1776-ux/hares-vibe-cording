@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, Award, FileCode, Timer } from 'lucide-react';
+import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, Award, FileCode, Timer, CheckCircle2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import ProgressStats from '../components/home/ProgressStats';
+import { useStudyTracker } from '../hooks/useStudyTracker';
 
 interface Feature {
   to: string;
@@ -56,9 +58,50 @@ const categories: Category[] = [
 ];
 
 export default function HomePage() {
+  const { logActivity, hasStudied } = useStudyTracker();
+  const today = new Date().toISOString().split('T')[0];
+  const checkedIn = hasStudied(today) && (() => {
+    const rec = JSON.parse(localStorage.getItem('cording-study-records') || '[]');
+    return rec.some((r: any) => r.date === today && r.activities.some((a: any) => a.type === 'attendance'));
+  })();
+  const [justChecked, setJustChecked] = useState(false);
+
+  const handleCheckIn = () => {
+    if (checkedIn || justChecked) return;
+    logActivity('attendance', '출석 체크 완료!');
+    setJustChecked(true);
+  };
+
+  const isChecked = checkedIn || justChecked;
+
   return (
     <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 md:px-6 pt-4 pb-24 md:pb-8">
       <p className="text-gray-500 mb-4">오늘도 바이브코딩 화이팅!</p>
+
+      {/* 출석체크 */}
+      <button
+        onClick={handleCheckIn}
+        disabled={isChecked}
+        className={`w-full mb-4 rounded-2xl p-4 shadow-sm flex items-center gap-3 transition-all ${
+          isChecked
+            ? 'bg-green-50 border-2 border-green-300'
+            : 'bg-white border-2 border-dashed border-indigo-300 hover:border-indigo-400 hover:shadow-md active:scale-[0.98]'
+        }`}
+      >
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+          isChecked ? 'bg-green-100' : 'bg-indigo-100'
+        }`}>
+          <CheckCircle2 size={24} className={isChecked ? 'text-green-500' : 'text-indigo-400'} />
+        </div>
+        <div className="text-left">
+          <p className={`font-bold ${isChecked ? 'text-green-600' : 'text-gray-800'}`}>
+            {isChecked ? '오늘 출석 완료!' : '오늘의 출석체크'}
+          </p>
+          <p className="text-xs text-gray-400">
+            {isChecked ? '오늘도 열심히 공부해요!' : '버튼을 눌러 출석 도장을 찍어요!'}
+          </p>
+        </div>
+      </button>
 
       <ProgressStats />
 
