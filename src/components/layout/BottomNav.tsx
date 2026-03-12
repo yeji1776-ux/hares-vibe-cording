@@ -12,21 +12,21 @@ const navItems = [
 
 export default function BottomNav() {
   return (
-    <nav className="sticky top-14 bg-white border-b border-gray-200 z-40">
-      <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto flex justify-around">
-        {navItems.map(({ to, icon: Icon, label }) => (
+    <nav className="sticky top-16 bg-white border-b border-gray-100 z-40">
+      <div className="max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-6 h-12 flex items-center gap-1 overflow-x-auto no-scrollbar">
+        {navItems.map(({ to, label }) => (
           <NavLink
             key={to}
             to={to}
             end={to === '/'}
             className={({ isActive }) =>
-              `flex flex-col items-center py-1.5 px-1 text-[10px] no-underline transition-colors ${
-                isActive ? 'text-indigo-600' : 'text-gray-400'
+              `px-5 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-all no-underline ${isActive
+                ? 'bg-gray-900 text-white shadow-md'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
               }`
             }
           >
-            <Icon size={18} />
-            <span className="mt-0.5">{label}</span>
+            {label}
           </NavLink>
         ))}
       </div>

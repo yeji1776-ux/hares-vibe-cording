@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, Award, FileCode, Timer, CheckCircle2, BookOpen, Bookmark } from 'lucide-react';
+import { GraduationCap, MessageCircle, BookA, Calendar, FolderOpen, Camera, Youtube, Sparkles, FileCode, Timer, CheckCircle2, BookOpen, Bookmark, User, Plus, Award } from 'lucide-react';
 import { useTimer } from '../contexts/TimerContext';
 import type { LucideIcon } from 'lucide-react';
 import ProgressStats from '../components/home/ProgressStats';
@@ -60,7 +60,7 @@ const categories: Category[] = [
 
 export default function HomePage() {
   const { logActivity, hasStudied } = useStudyTracker();
-  const { mode, timeLeft, isRunning } = useTimer();
+  const { timeLeft, isRunning } = useTimer();
   const today = new Date().toISOString().split('T')[0];
   const checkedIn = hasStudied(today) && (() => {
     const rec = JSON.parse(localStorage.getItem('cording-study-records') || '[]');
@@ -79,66 +79,72 @@ export default function HomePage() {
   const timerSec = timeLeft % 60;
 
   return (
-    <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 md:px-6 pt-4 pb-8">
-      <p className="text-gray-500 mb-3">오늘도 바이브코딩 화이팅!</p>
+    <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-6 pt-8 pb-16">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-gray-900 tracking-tight">학습 대시보드</h1>
+          <p className="text-gray-400 font-medium mt-1">오늘도 바이브코딩 화이팅!</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Link to="/chatbot" className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-full shadow-sm text-sm font-bold text-gray-700 no-underline hover:bg-gray-50 transition-colors">
+            <Bookmark size={16} className="text-amber-500" />
+            북마크
+          </Link>
+          <button
+            onClick={handleCheckIn}
+            disabled={isChecked}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full shadow-sm text-sm font-bold transition-all ${isChecked ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-[#0066FF] text-white hover:bg-[#0052cc] active:scale-95'
+              }`}
+          >
+            {isChecked ? <CheckCircle2 size={16} /> : <Plus size={16} />}
+            {isChecked ? '출석 완료' : '출석 체크'}
+          </button>
+        </div>
+      </div>
 
-      {/* 퀵 액션: 출석 + 북마크 + 타이머 */}
-      <div className="grid grid-cols-3 gap-2 mb-4">
-        <button
-          onClick={handleCheckIn}
-          disabled={isChecked}
-          className={`flex flex-col items-center justify-center rounded-xl py-2.5 shadow-sm transition-all ${
-            isChecked
-              ? 'bg-green-50 border border-green-300'
-              : 'bg-white border border-dashed border-indigo-300 active:scale-95'
-          }`}
-        >
-          <CheckCircle2 size={20} className={isChecked ? 'text-green-500' : 'text-indigo-400'} />
-          <span className={`text-[11px] font-bold mt-1 ${isChecked ? 'text-green-600' : 'text-gray-700'}`}>
-            {isChecked ? '출석완료' : '출석체크'}
-          </span>
-        </button>
-
-        <Link
-          to="/chatbot"
-          className="flex flex-col items-center justify-center rounded-xl py-2.5 bg-white shadow-sm border border-gray-100 no-underline"
-        >
-          <Bookmark size={20} className="text-amber-500" />
-          <span className="text-[11px] font-bold mt-1 text-gray-700">북마크</span>
-        </Link>
-
-        <Link
-          to="/timer"
-          className="flex flex-col items-center justify-center rounded-xl py-2.5 bg-white shadow-sm border border-gray-100 no-underline"
-        >
-          <Timer size={20} className={isRunning ? (mode === 'focus' ? 'text-indigo-500' : 'text-green-500') : 'text-cyan-500'} />
-          <span className={`text-[11px] font-bold mt-1 tabular-nums ${isRunning ? 'text-indigo-600' : 'text-gray-700'}`}>
-            {isRunning ? `${String(timerMin).padStart(2,'0')}:${String(timerSec).padStart(2,'0')}` : '타이머'}
-          </span>
+      <div className="dashboard-card mb-8 p-6 flex flex-col md:flex-row items-center gap-6">
+        <div className="w-24 h-24 rounded-full bg-blue-50 border-4 border-white shadow-md flex items-center justify-center overflow-hidden">
+          <User size={48} className="text-blue-200" />
+        </div>
+        <div className="flex-1 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+            <h2 className="text-2xl font-bold text-gray-900">Vibe 수강생</h2>
+            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${isChecked ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+              {isChecked ? '활동 중' : '일반'}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-gray-400 font-medium">
+            <span className="flex items-center gap-1.5"><FileCode size={14} /> ID: VIBE-2024</span>
+            <span className="flex items-center gap-1.5"><Timer size={14} /> {isRunning ? `${String(timerMin).padStart(2, '0')}:${String(timerSec).padStart(2, '0')}` : '대기 중'}</span>
+          </div>
+        </div>
+        <Link to="/timer" className="px-6 py-3 bg-blue-50 text-[#0066FF] rounded-xl font-bold text-sm no-underline hover:bg-blue-100 transition-colors">
+          타이머 시작
         </Link>
       </div>
 
       <ProgressStats />
 
-      <div className="space-y-6">
+      <div className="space-y-12">
         {categories.map(cat => (
           <div key={cat.title}>
-            <h2 className="text-sm font-semibold text-gray-500 mb-2 flex items-center gap-1.5">
-              <span>{cat.emoji}</span> {cat.title}
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xl">{cat.emoji}</span>
+              <h2 className="text-lg font-bold text-gray-900 tracking-tight">{cat.title}</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {cat.items.map(({ to, icon: Icon, label, desc, color }) => (
                 <Link
                   key={to}
                   to={to}
-                  className="flex items-center gap-2.5 bg-white rounded-xl px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow no-underline"
+                  className="dashboard-card group p-5 no-underline flex flex-col items-start gap-4"
                 >
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${color}`}>
-                    <Icon size={16} />
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${color}`}>
+                    <Icon size={22} />
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-gray-800 text-sm leading-tight">{label}</h3>
-                    <p className="text-[11px] text-gray-400 truncate">{desc}</p>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">{label}</h3>
+                    <p className="text-sm text-gray-400 font-medium leading-relaxed">{desc}</p>
                   </div>
                 </Link>
               ))}

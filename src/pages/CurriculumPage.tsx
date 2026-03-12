@@ -59,7 +59,7 @@ export default function CurriculumPage() {
     const isBookmarked = bookmarkedDays.includes(viewingDay);
 
     return (
-      <PageWrapper title={`Day ${viewingDay}`} subtitle={dayData.title}>
+      <PageWrapper title={`${viewingDay}일차`} subtitle={dayData.title}>
         {/* Top bar */}
         <div className="flex items-center justify-between mb-4">
           <button
@@ -81,9 +81,8 @@ export default function CurriculumPage() {
             </button>
             <button
               onClick={() => toggleDay(viewingDay)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                isDone ? 'bg-green-100 text-green-700' : 'bg-indigo-600 text-white'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${isDone ? 'bg-green-100 text-green-700' : 'bg-indigo-600 text-white'
+                }`}
             >
               {isDone ? '완료됨 ✓' : '완료하기'}
             </button>
@@ -220,7 +219,7 @@ export default function CurriculumPage() {
               onClick={() => openDay(viewingDay - 1)}
               className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-200 transition-colors"
             >
-              ← Day {viewingDay - 1}
+              ← {viewingDay - 1}일차
             </button>
           )}
           {viewingDay < 60 && (
@@ -228,7 +227,7 @@ export default function CurriculumPage() {
               onClick={() => openDay(viewingDay + 1)}
               className="flex-1 py-3 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 transition-colors"
             >
-              Day {viewingDay + 1} →
+              {viewingDay + 1}일차 →
             </button>
           )}
         </div>
@@ -275,7 +274,7 @@ export default function CurriculumPage() {
                 onClick={() => openDay(day)}
                 className="px-2.5 py-1 bg-white text-indigo-600 rounded-lg text-xs font-medium hover:bg-indigo-100 transition-colors"
               >
-                Day {day}
+                {day}일차
               </button>
             ))}
           </div>
@@ -291,11 +290,10 @@ export default function CurriculumPage() {
             <button
               key={month.month}
               onClick={() => { setExpandedMonth(month.month); setExpandedWeek(null); }}
-              className={`flex-1 p-3 rounded-xl text-center transition-all ${
-                expandedMonth === month.month
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
-              }`}
+              className={`flex-1 p-3 rounded-xl text-center transition-all ${expandedMonth === month.month
+                ? 'bg-indigo-600 text-white shadow-md'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+                }`}
             >
               <div className="text-xs font-bold">{month.month}개월차</div>
               <div className="text-[10px] mt-0.5 opacity-75">{monthCompleted}/{monthDays.length}일</div>
@@ -326,7 +324,7 @@ export default function CurriculumPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{week.emoji}</span>
                     <div>
-                      <h3 className="font-semibold text-gray-800 text-sm">Week {week.week}: {week.theme}</h3>
+                      <h3 className="font-semibold text-gray-800 text-sm">{week.week}주차: {week.theme}</h3>
                       <span className="text-xs text-gray-400">{weekCompleted}/{week.days.length}일 완료</span>
                     </div>
                   </div>
@@ -347,9 +345,8 @@ export default function CurriculumPage() {
                         <button
                           key={day.day}
                           onClick={() => openDay(day.day)}
-                          className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
-                            isDone ? 'bg-green-50' : 'bg-gray-50 hover:bg-gray-100'
-                          }`}
+                          className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all ${isDone ? 'bg-green-50' : 'bg-gray-50 hover:bg-gray-100'
+                            }`}
                         >
                           <button
                             onClick={e => { e.stopPropagation(); toggleDay(day.day); }}
@@ -365,7 +362,7 @@ export default function CurriculumPage() {
                             <div className="flex items-center gap-2">
                               <span className="text-sm">{day.emoji}</span>
                               <span className={`text-sm font-medium ${isDone ? 'text-green-700' : 'text-gray-800'}`}>
-                                Day {day.day}: {day.title}
+                                {day.day}일차: {day.title}
                               </span>
                             </div>
                             <p className="text-xs text-gray-400 mt-0.5 truncate">{day.description}</p>
