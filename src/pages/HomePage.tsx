@@ -112,18 +112,20 @@ export default function HomePage() {
             <h2 className="text-sm font-semibold text-gray-500 mb-2 flex items-center gap-1.5">
               <span>{cat.emoji}</span> {cat.title}
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="space-y-2">
               {cat.items.map(({ to, icon: Icon, label, desc, color }) => (
                 <Link
                   key={to}
                   to={to}
-                  className="block bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow no-underline"
+                  className="flex items-center gap-3 bg-white rounded-xl px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow no-underline"
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${color}`}>
-                    <Icon size={20} />
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${color}`}>
+                    <Icon size={18} />
                   </div>
-                  <h3 className="font-semibold text-gray-800 text-sm">{label}</h3>
-                  <p className="text-xs text-gray-400 mt-1">{desc}</p>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-gray-800 text-sm">{label}</h3>
+                    <p className="text-xs text-gray-400 truncate">{desc}</p>
+                  </div>
                 </Link>
               ))}
             </div>
