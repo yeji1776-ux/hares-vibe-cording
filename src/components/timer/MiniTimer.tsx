@@ -19,7 +19,7 @@ export default function MiniTimer() {
   return (
     <div
       onClick={() => navigate('/timer')}
-      className="fixed bottom-20 right-3 z-50 flex items-center gap-2 bg-white rounded-full px-3 py-2 shadow-lg border border-gray-200 cursor-pointer hover:shadow-xl transition-shadow"
+      className="fixed top-[7.5rem] right-3 z-50 flex items-center gap-2 bg-white rounded-full px-3 py-2 shadow-lg border border-gray-200 cursor-pointer hover:shadow-xl transition-shadow"
     >
       <div className={`w-2 h-2 rounded-full ${isRunning ? 'animate-pulse' : ''} ${
         mode === 'focus' ? 'bg-indigo-500' : 'bg-green-500'

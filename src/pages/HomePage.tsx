@@ -79,7 +79,7 @@ export default function HomePage() {
   const timerSec = timeLeft % 60;
 
   return (
-    <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 md:px-6 pt-4 pb-24 md:pb-8">
+    <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-4 md:px-6 pt-4 pb-8">
       <p className="text-gray-500 mb-3">오늘도 바이브코딩 화이팅!</p>
 
       {/* 퀵 액션: 출석 + 북마크 + 타이머 */}
