@@ -77,8 +77,8 @@ export default function BookQAPage() {
                 </div>
                 <img src={q.imageDataUrl} alt="질문 사진" className="w-full rounded-xl mb-2" />
                 {q.question && <p className="text-sm text-gray-700 mb-2">❓ {q.question}</p>}
-                <div className="bg-blue-50 rounded-xl p-3">
-                  <p className="text-sm text-blue-700">{q.answer}</p>
+                <div className="bg-[#F5F3FF] rounded-xl p-3">
+                  <p className="text-sm text-purple-700">{q.answer}</p>
                 </div>
               </div>
             ))}

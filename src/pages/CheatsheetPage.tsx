@@ -65,7 +65,7 @@ const CHEATSHEETS: CheatSection[] = [
     id: 'react',
     title: 'React 기본 패턴',
     emoji: '⚛️',
-    color: 'bg-blue-50 border-blue-200',
+    color: 'bg-[#F5F3FF] border-purple-200',
     items: [
       { command: 'useState(초기값)', desc: '상태 관리 훅' },
       { command: 'useEffect(() => {}, [])', desc: '사이드 이펙트 처리' },

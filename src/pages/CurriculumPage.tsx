@@ -156,7 +156,7 @@ export default function CurriculumPage() {
             </h4>
             <div className="flex flex-wrap gap-2">
               {dayData.tools.map(tool => (
-                <span key={tool} className="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full font-medium">
+                <span key={tool} className="text-xs bg-[#F5F3FF] text-purple-600 px-3 py-1.5 rounded-full font-medium">
                   {tool}
                 </span>
               ))}

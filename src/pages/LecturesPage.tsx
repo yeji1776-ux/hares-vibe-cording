@@ -1,136 +1,118 @@
 import { useState } from 'react';
-import { BookOpen, ExternalLink, ChevronRight } from 'lucide-react';
-import PageWrapper from '../components/layout/PageWrapper';
+import { BookOpen, ExternalLink, ChevronDown, ChevronRight, Lightbulb } from 'lucide-react';
+import { lectureContent } from '../data/lectureContent';
+import type { LectureWeek, LectureSection } from '../data/lectureContent';
 
-interface Lecture {
-  id: string;
-  weeks: string;
-  title: string;
-  topics: string[];
-  file: string;
-  color: string;
-}
-
-const lectures: Lecture[] = [
-  {
-    id: 'w1-2',
-    weeks: '1~2주차',
-    title: '바이브코딩 소개 & AI 프롬프팅',
-    topics: [
-      '바이브코딩이란?',
-      'Cursor IDE 설치 & 세팅',
-      '첫 웹페이지 만들기',
-      'HTML/CSS/JavaScript 기본 개념',
-      '좋은 프롬프트의 5가지 요소',
-      '대화형 개발 방법',
-      '프롬프트 꿀팁 모음',
-    ],
-    file: '/lectures/vibe-coding-week1-2.html',
-    color: 'bg-indigo-100 text-indigo-600',
-  },
-  {
-    id: 'w3-4',
-    weeks: '3~4주차',
-    title: '웹앱 기초 & 데이터 연동',
-    topics: [
-      'Tailwind CSS 스타일링',
-      '반응형 디자인',
-      '랜딩페이지 만들기',
-      'GitHub + Vercel 배포',
-      'Next.js 프로젝트 구조',
-      'Supabase 데이터베이스',
-      'CRUD 앱 만들기',
-    ],
-    file: '/lectures/vibe-coding-week3-4.html',
-    color: 'bg-teal-100 text-teal-600',
-  },
-  {
-    id: 'w5-6',
-    weeks: '5~6주차',
-    title: '대시보드 & 업무 자동화',
-    topics: [
-      'KPI 카드 & 차트 만들기',
-      'Recharts 라이브러리',
-      '필터링 & 검색 기능',
-      'Supabase Realtime',
-      'API 개념과 활용',
-      '슬랙 웹훅 연동',
-      '크론잡(자동 실행)',
-      'API 키 보안 관리',
-    ],
-    file: '/lectures/vibe-coding-week5-6.html',
-    color: 'bg-amber-100 text-amber-600',
-  },
-  {
-    id: 'w7-8',
-    weeks: '7~8주차',
-    title: '엔티티(Entity) 완전 정복',
-    topics: [
-      'DB 엔티티 개념',
-      '클린 아키텍처',
-      '바이브코딩에서의 엔티티 활용',
-    ],
-    file: '/lectures/vibe-coding-week7-8.html',
-    color: 'bg-rose-100 text-rose-600',
-  },
-];
-
-export default function LecturesPage() {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+function SectionCard({ section }: { section: LectureSection }) {
+  const [open, setOpen] = useState(false);
 
   return (
-    <PageWrapper title="교안 자료" subtitle="주차별 바이브코딩 강의 교안을 확인하세요!">
-      <div className="space-y-4">
-        {lectures.map((lec) => (
-          <div key={lec.id} className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <button
-              onClick={() => setExpandedId(expandedId === lec.id ? null : lec.id)}
-              className="w-full flex items-center gap-3 p-4 text-left"
-            >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${lec.color}`}>
-                <BookOpen size={22} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-gray-400">{lec.weeks}</p>
-                <h3 className="font-bold text-gray-800 text-sm">{lec.title}</h3>
-              </div>
-              <ChevronRight
-                size={18}
-                className={`text-gray-400 transition-transform ${expandedId === lec.id ? 'rotate-90' : ''}`}
-              />
-            </button>
-
-            {expandedId === lec.id && (
-              <div className="px-4 pb-4 animate-fade-in">
-                <div className="bg-gray-50 rounded-xl p-3 mb-3">
-                  <p className="text-xs font-semibold text-gray-500 mb-2">다루는 내용</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {lec.topics.map((topic) => (
-                      <span key={topic} className="text-xs bg-white rounded-full px-2.5 py-1 text-gray-600 border border-gray-200">
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
+    <div className="border border-gray-100 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-3 p-3.5 text-left hover:bg-gray-50 transition-colors"
+      >
+        <span className="text-lg flex-shrink-0">{section.emoji}</span>
+        <span className="flex-1 font-bold text-sm text-gray-800">{section.title}</span>
+        {open ? (
+          <ChevronDown size={16} className="text-gray-400 flex-shrink-0" />
+        ) : (
+          <ChevronRight size={16} className="text-gray-400 flex-shrink-0" />
+        )}
+      </button>
+      {open && (
+        <div className="px-3.5 pb-3.5 animate-fade-in">
+          <p className="text-sm text-gray-600 leading-relaxed mb-2">{section.content}</p>
+          {section.tips && section.tips.length > 0 && (
+            <div className="bg-gray-50 rounded-lg p-3 space-y-1.5">
+              {section.tips.map((tip, i) => (
+                <div key={i} className="flex items-start gap-2 text-xs text-gray-600 leading-relaxed">
+                  <span className="text-gray-300 mt-0.5 flex-shrink-0">•</span>
+                  <span>{tip}</span>
                 </div>
-                <a
-                  href={lec.file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors no-underline"
-                >
-                  <ExternalLink size={16} />
-                  슬라이드 보기
-                </a>
-              </div>
-            )}
+              ))}
+            </div>
+          )}
+          {section.code && (
+            <pre className="mt-2 bg-gray-900 text-green-300 text-xs rounded-lg p-3 overflow-x-auto">
+              {section.code}
+            </pre>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function WeekCard({ week }: { week: LectureWeek }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="dashboard-card overflow-hidden">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="w-full flex items-center gap-3 p-4 text-left"
+      >
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${week.color}`}>
+          <BookOpen size={22} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{week.weeks}</p>
+          <h3 className="font-bold text-gray-900 text-sm">{week.title}</h3>
+          <p className="text-[11px] text-gray-400 mt-0.5">{week.sections.length}개 주제</p>
+        </div>
+        <ChevronDown
+          size={18}
+          className={`text-gray-400 transition-transform flex-shrink-0 ${expanded ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      {expanded && (
+        <div className="px-4 pb-4 animate-fade-in space-y-2">
+          <div className="space-y-1.5">
+            {week.sections.map((section, i) => (
+              <SectionCard key={i} section={section} />
+            ))}
           </div>
+          <a
+            href={week.slideFile}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-2.5 bg-gray-100 text-gray-600 rounded-xl text-xs font-bold hover:bg-gray-200 transition-colors no-underline mt-3"
+          >
+            <ExternalLink size={14} />
+            슬라이드로도 보기
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function LecturesPage() {
+  return (
+    <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-6 pt-8 pb-16">
+      <div className="mb-6">
+        <h1 className="text-2xl font-black text-gray-900 tracking-tight">교안 자료</h1>
+        <p className="text-gray-400 font-medium text-sm mt-1">주차별 강의 내용을 읽고 복습하세요!</p>
+      </div>
+
+      <div className="space-y-3">
+        {lectureContent.map((week) => (
+          <WeekCard key={week.id} week={week} />
         ))}
       </div>
 
-      <div className="mt-6 bg-indigo-50 rounded-2xl p-4">
-        <p className="text-xs text-indigo-600 font-semibold mb-1">교안 활용 팁</p>
-        <p className="text-xs text-indigo-500">슬라이드는 좌우 화살표 키 또는 스와이프로 넘길 수 있어요!</p>
+      <div className="mt-6 dashboard-card p-4 flex items-start gap-3">
+        <Lightbulb size={18} className="text-amber-500 flex-shrink-0 mt-0.5" />
+        <div>
+          <p className="text-xs font-bold text-gray-700 mb-0.5">학습 팁</p>
+          <p className="text-xs text-gray-400 leading-relaxed">
+            각 주차를 펼쳐서 내용을 읽고, 모르는 용어는 용어 사전에서 찾아보세요!
+            슬라이드 버전도 함께 제공됩니다.
+          </p>
+        </div>
       </div>
-    </PageWrapper>
+    </div>
   );
 }

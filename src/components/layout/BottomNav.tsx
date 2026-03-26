@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom';
-import { Home, GraduationCap, MessageCircle, BookA, Calendar, FolderOpen } from 'lucide-react';
+import { Home, BookOpen, FileCode, Calendar, FolderOpen, NotebookPen } from 'lucide-react';
 
 const navItems = [
   { to: '/', icon: Home, label: '홈' },
-  { to: '/curriculum', icon: GraduationCap, label: '커리큘럼' },
-  { to: '/chatbot', icon: MessageCircle, label: '챗봇' },
-  { to: '/dictionary', icon: BookA, label: '사전' },
-  { to: '/calendar', icon: Calendar, label: '달력' },
-  { to: '/portfolio', icon: FolderOpen, label: '작품' },
+  { to: '/lectures', icon: BookOpen, label: '학습하기' },
+  { to: '/cheatsheet', icon: FileCode, label: '코드 치트시트' },
+  { to: '/calendar', icon: Calendar, label: '학습 달력' },
+  { to: '/portfolio', icon: FolderOpen, label: '웹앱 모음' },
+  { to: '/memo', icon: NotebookPen, label: '메모장' },
 ];
 
 export default function BottomNav() {

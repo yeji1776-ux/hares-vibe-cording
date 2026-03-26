@@ -22,24 +22,20 @@ export default function ProgressStats() {
     return streak;
   };
 
-  const getDDay = () => {
-    if (records.length === 0) return 0;
-    const sorted = [...records].sort((a, b) => a.date.localeCompare(b.date));
-    const first = new Date(sorted[0].date);
-    const today = new Date();
-    return Math.floor((today.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const getStudyDays = () => {
+    return records.filter(r => r.activities.length > 0).length;
   };
 
   const streak = getStreak();
-  const dDay = getDDay();
+  const studyDays = getStudyDays();
   const curriculumProgress = Math.round((completedDays.length / 60) * 100);
   const totalTermsViewed = records.reduce((sum, r) => sum + r.activities.length, 0);
 
   const stats = [
     { icon: Flame, label: '연속 학습', value: `${streak}일`, color: 'text-orange-500 bg-orange-50' },
-    { icon: Calendar, label: '학습 일수', value: dDay > 0 ? `D+${dDay}` : '시작 전', color: 'text-blue-500 bg-blue-50' },
-    { icon: BookOpen, label: '커리큘럼', value: `${curriculumProgress}%`, color: 'text-indigo-500 bg-indigo-50' },
-    { icon: Trophy, label: '활동량', value: `${totalTermsViewed}회`, color: 'text-yellow-500 bg-yellow-50' },
+    { icon: Calendar, label: '학습 일수', value: studyDays > 0 ? `${studyDays}일` : '시작 전', color: 'text-purple-500 bg-purple-50' },
+    { icon: BookOpen, label: '커리큘럼', value: `${curriculumProgress}%`, color: 'text-violet-500 bg-violet-50' },
+    { icon: Trophy, label: '활동량', value: `${totalTermsViewed}회`, color: 'text-amber-500 bg-amber-50' },
   ];
 
   return (

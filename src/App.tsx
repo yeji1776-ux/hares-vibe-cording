@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/layout/Header';
 import BottomNav from './components/layout/BottomNav';
 import { TimerProvider } from './contexts/TimerContext';
+import { UserProvider, useUser } from './contexts/UserContext';
 import MiniTimer from './components/timer/MiniTimer';
 import HomePage from './pages/HomePage';
 import DictionaryPage from './pages/DictionaryPage';
@@ -16,8 +17,16 @@ import BadgesPage from './pages/BadgesPage';
 import CheatsheetPage from './pages/CheatsheetPage';
 import TimerPage from './pages/TimerPage';
 import LecturesPage from './pages/LecturesPage';
+import MemoPage from './pages/MemoPage';
+import AuthPage from './pages/AuthPage';
 
-export default function App() {
+function AppContent() {
+  const { user } = useUser();
+
+  if (!user) {
+    return <AuthPage />;
+  }
+
   return (
     <TimerProvider>
     <div className="min-h-screen bg-gray-50">
@@ -38,10 +47,19 @@ export default function App() {
           <Route path="/cheatsheet" element={<CheatsheetPage />} />
           <Route path="/timer" element={<TimerPage />} />
           <Route path="/lectures" element={<LecturesPage />} />
+          <Route path="/memo" element={<MemoPage />} />
         </Routes>
       </main>
       <MiniTimer />
     </div>
     </TimerProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <UserProvider>
+      <AppContent />
+    </UserProvider>
   );
 }
