@@ -43,25 +43,25 @@ export default function CalendarGrid({ records, hasStudied, getRecord, bookQuest
 
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-2xl p-4 shadow-sm">
+      <div className="bg-[#12121A] rounded-2xl p-4 shadow-sm border border-[#1F1F2E]">
         <div className="flex items-center justify-between mb-4">
-          <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-1 rounded-full hover:bg-gray-100">
-            <ChevronLeft size={20} className="text-gray-600" />
+          <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-1 rounded-full hover:bg-[#1A1A2E]">
+            <ChevronLeft size={20} className="text-[#9CA3AF]" />
           </button>
           <div className="text-center">
-            <h3 className="font-semibold text-gray-800">
+            <h3 className="font-semibold text-[#E5E7EB]">
               {format(currentMonth, 'yyyy년 M월', { locale: ko })}
             </h3>
-            <p className="text-xs text-gray-400">{studiedCount}일 공부했어요!</p>
+            <p className="text-xs text-[#9CA3AF]">{studiedCount}일 공부했어요!</p>
           </div>
-          <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-1 rounded-full hover:bg-gray-100">
-            <ChevronRight size={20} className="text-gray-600" />
+          <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-1 rounded-full hover:bg-[#1A1A2E]">
+            <ChevronRight size={20} className="text-[#9CA3AF]" />
           </button>
         </div>
 
         <div className="grid grid-cols-7 gap-1 mb-2">
           {WEEKDAYS.map(d => (
-            <div key={d} className="text-center text-xs text-gray-400 font-medium py-1">{d}</div>
+            <div key={d} className="text-center text-xs text-[#6B7280] font-medium py-1">{d}</div>
           ))}
         </div>
 

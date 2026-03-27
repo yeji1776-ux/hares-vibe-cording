@@ -30,64 +30,64 @@ export default function ProjectForm({ project, onSubmit, onCancel }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex items-end sm:items-center justify-center" onClick={onCancel}>
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-end sm:items-center justify-center" onClick={onCancel}>
       <div
-        className="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6 max-h-[85vh] overflow-y-auto animate-fade-in"
+        className="bg-[#12121A] border border-[#1F1F2E] w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-6 max-h-[85vh] overflow-y-auto animate-fade-in"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-gray-800">
+          <h2 className="text-lg font-bold text-[#E5E7EB]">
             {project ? '프로젝트 수정' : '새 프로젝트 추가'}
           </h2>
-          <button onClick={onCancel} className="p-1 rounded-full hover:bg-gray-100">
-            <X size={20} className="text-gray-400" />
+          <button onClick={onCancel} className="p-1 rounded-full hover:bg-[#1A1A2E]">
+            <X size={20} className="text-[#6B7280]" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">제목 *</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1">제목 *</label>
             <input
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="나의 첫 웹사이트"
-              className="w-full px-3 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              className="w-full px-3 py-2.5 bg-[#0A0A0F] rounded-xl border border-[#1F1F2E] text-sm text-[#E5E7EB] placeholder-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/50"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">사이트 URL</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1">사이트 URL</label>
             <input
               type="url"
               value={siteUrl}
               onChange={e => setSiteUrl(e.target.value)}
               placeholder="https://my-site.vercel.app"
-              className="w-full px-3 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              className="w-full px-3 py-2.5 bg-[#0A0A0F] rounded-xl border border-[#1F1F2E] text-sm text-[#E5E7EB] placeholder-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/50"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">칭찬 👏</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1">칭찬 👏</label>
             <textarea
               value={praise}
               onChange={e => setPraise(e.target.value)}
               placeholder="잘한 점을 적어보세요!"
               rows={2}
-              className="w-full px-3 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
+              className="w-full px-3 py-2.5 bg-[#0A0A0F] rounded-xl border border-[#1F1F2E] text-sm text-[#E5E7EB] placeholder-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/50 resize-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">개선점 💡</label>
+            <label className="block text-sm font-medium text-[#9CA3AF] mb-1">개선점 💡</label>
             <textarea
               value={improvements}
               onChange={e => setImprovements(e.target.value)}
               placeholder="다음에 개선할 점을 적어보세요"
               rows={2}
-              className="w-full px-3 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 resize-none"
+              className="w-full px-3 py-2.5 bg-[#0A0A0F] rounded-xl border border-[#1F1F2E] text-sm text-[#E5E7EB] placeholder-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#F59E0B]/50 resize-none"
             />
           </div>
           <button
             type="submit"
-            className="w-full py-3 bg-indigo-600 text-white rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors"
+            className="w-full py-3 bg-gradient-to-r from-[#F59E0B] to-[#EF4444] text-white rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity"
           >
             {project ? '수정하기' : '추가하기'}
           </button>

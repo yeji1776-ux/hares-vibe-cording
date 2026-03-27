@@ -2,7 +2,6 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 
 interface UserProfile {
   nickname: string;
-  pin: string;
   createdAt: string;
   avatar?: string;
   goal?: string;
@@ -10,8 +9,7 @@ interface UserProfile {
 
 interface UserContextType {
   user: UserProfile | null;
-  register: (nickname: string, pin: string) => void;
-  login: (pin: string) => boolean;
+  register: (nickname: string) => void;
   logout: () => void;
   updateProfile: (updates: Partial<Pick<UserProfile, 'avatar' | 'goal'>>) => void;
 }
@@ -38,25 +36,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     return parsed as unknown as UserProfile;
   });
 
-  const register = (nickname: string, pin: string) => {
+  const register = (nickname: string) => {
     const profile: UserProfile = {
       nickname,
-      pin,
       createdAt: new Date().toISOString().split('T')[0],
     };
     saveUser({ ...profile, loggedIn: true });
     setUser(profile);
-  };
-
-  const login = (pin: string): boolean => {
-    const parsed = loadUser();
-    if (!parsed) return false;
-    if (parsed.pin === pin) {
-      saveUser({ ...parsed, loggedIn: true });
-      setUser(parsed as unknown as UserProfile);
-      return true;
-    }
-    return false;
   };
 
   const logout = () => {
@@ -73,7 +59,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, register, login, logout, updateProfile }}>
+    <UserContext.Provider value={{ user, register, logout, updateProfile }}>
       {children}
     </UserContext.Provider>
   );

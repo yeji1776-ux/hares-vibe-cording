@@ -36,13 +36,13 @@ export default function PortfolioPage() {
     <PageWrapper title="내 웹앱 모음" subtitle="만든 작품을 자랑스럽게 정리해요!">
       <button
         onClick={() => { setEditing(null); setShowForm(true); }}
-        className="w-full py-3 mb-4 bg-indigo-600 text-white rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+        className="w-full py-3 mb-4 gradient-gold-red text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2"
       >
         <Plus size={18} /> 새 프로젝트 추가
       </button>
 
       {projects.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-[#9CA3AF]">
           <p className="text-4xl mb-3">🎨</p>
           <p className="font-medium">아직 프로젝트가 없어요!</p>
           <p className="text-sm mt-1">첫 프로젝트를 추가해 보세요 🎉</p>

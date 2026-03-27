@@ -14,7 +14,7 @@ export default function CalendarPage() {
       <div className="mt-4">
         <button
           onClick={() => logActivity('manual', '직접 기록: 오늘 공부했어요!')}
-          className="w-full py-3 bg-indigo-600 text-white rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors"
+          className="w-full py-3 gradient-gold-red text-white rounded-xl font-semibold text-sm transition-colors"
         >
           오늘 공부 기록하기 ✏️
         </button>

@@ -14,10 +14,10 @@ export default function DayCell({ day, isToday, hasStudied, isSelected, onClick 
       onClick={onClick}
       className={`aspect-square rounded-xl flex flex-col items-center justify-center text-sm transition-all ${
         isSelected
-          ? 'bg-indigo-600 text-white shadow-md'
+          ? 'bg-[#F59E0B] text-[#0A0A0F] shadow-md font-bold'
           : isToday
-          ? 'bg-indigo-50 text-indigo-600 font-bold'
-          : 'hover:bg-gray-100 text-gray-700'
+          ? 'bg-[#F59E0B]/15 text-[#F59E0B] font-bold'
+          : 'hover:bg-[#1A1A2E] text-[#E5E7EB]'
       }`}
     >
       <span>{day}</span>
@@ -25,7 +25,7 @@ export default function DayCell({ day, isToday, hasStudied, isSelected, onClick 
         <span className="w-1.5 h-1.5 bg-green-500 rounded-full mt-0.5" />
       )}
       {hasStudied && isSelected && (
-        <span className="w-1.5 h-1.5 bg-white rounded-full mt-0.5" />
+        <span className="w-1.5 h-1.5 bg-[#0A0A0F] rounded-full mt-0.5" />
       )}
     </button>
   );

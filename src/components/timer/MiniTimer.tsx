@@ -19,18 +19,18 @@ export default function MiniTimer() {
   return (
     <div
       onClick={() => navigate('/timer')}
-      className="fixed top-[7.5rem] right-3 z-50 flex items-center gap-2 bg-white rounded-full px-3 py-2 shadow-lg border border-gray-200 cursor-pointer hover:shadow-xl transition-shadow"
+      className="fixed top-[7.5rem] right-3 z-50 flex items-center gap-2 bg-[#12121A] rounded-full px-3 py-2 shadow-lg border border-[#1F1F2E] cursor-pointer hover:shadow-xl hover:border-[#F59E0B]/30 transition-all"
     >
       <div className={`w-2 h-2 rounded-full ${isRunning ? 'animate-pulse' : ''} ${
-        mode === 'focus' ? 'bg-indigo-500' : 'bg-green-500'
+        mode === 'focus' ? 'bg-[#F59E0B]' : 'bg-green-500'
       }`} />
-      <span className="text-sm font-bold text-gray-800 tabular-nums">
+      <span className="text-sm font-bold text-[#E5E7EB] tabular-nums">
         {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
       </span>
       <button
         onClick={(e) => { e.stopPropagation(); toggleTimer(); }}
         className={`w-7 h-7 rounded-full flex items-center justify-center text-white ${
-          mode === 'focus' ? 'bg-indigo-500' : 'bg-green-500'
+          mode === 'focus' ? 'bg-[#F59E0B]' : 'bg-green-500'
         }`}
       >
         {isRunning ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}

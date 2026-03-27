@@ -117,11 +117,11 @@ export default function MemoPage() {
   // Edit view
   if (editing) {
     return (
-      <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-6 pt-8 pb-16">
+      <div className="animate-fade-in max-w-[520px] mx-auto px-6 pt-8 pb-24">
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => setEditing(null)}
-            className="flex items-center gap-1.5 text-sm font-bold text-gray-500 hover:text-gray-800 transition-colors"
+            className="flex items-center gap-1.5 text-sm font-bold text-[#6B7280] hover:text-[#E5E7EB] transition-colors"
           >
             <ChevronLeft size={16} /> 목록으로
           </button>
@@ -129,14 +129,14 @@ export default function MemoPage() {
             {!isNew && (
               <button
                 onClick={() => setConfirmDelete(editing.id)}
-                className="p-2 rounded-full text-red-400 hover:bg-red-50 transition-colors"
+                className="p-2 rounded-full text-red-400 hover:bg-red-500/10 transition-colors"
               >
                 <Trash2 size={16} />
               </button>
             )}
             <button
               onClick={save}
-              className="flex items-center gap-1.5 px-4 py-2 bg-[#8B5CF6] text-white rounded-full text-sm font-bold hover:bg-[#7C3AED] transition-colors active:scale-95"
+              className="flex items-center gap-1.5 px-4 py-2 gradient-gold-red text-white rounded-full text-sm font-bold transition-colors active:scale-95"
             >
               <Check size={14} /> 저장
             </button>
@@ -149,30 +149,30 @@ export default function MemoPage() {
           value={editing.title}
           onChange={e => setEditing({ ...editing, title: e.target.value })}
           placeholder="제목"
-          className="w-full text-2xl font-black text-gray-900 bg-transparent border-none outline-none placeholder-gray-300 mb-4"
+          className="w-full text-2xl font-black text-[#E5E7EB] bg-transparent border-none outline-none placeholder-[#4B5563] mb-4"
         />
         <div className="flex items-center gap-2 mb-6">
           <input
             type="date"
             value={editing.date}
             onChange={e => setEditing({ ...editing, date: e.target.value })}
-            className="text-xs text-gray-400 font-medium bg-gray-50 border-none rounded-lg px-2 py-1 outline-none focus:ring-1 focus:ring-purple-300"
+            className="text-xs text-[#9CA3AF] font-medium bg-[#0A0A0F] border border-[#1F1F2E] rounded-lg px-2 py-1 outline-none focus:ring-1 focus:ring-[#F59E0B]"
           />
         </div>
         <textarea
           value={editing.content}
           onChange={e => setEditing({ ...editing, content: e.target.value })}
           placeholder="내용을 입력하세요..."
-          className="w-full min-h-[60vh] text-sm text-gray-700 bg-transparent border-none outline-none resize-none leading-relaxed placeholder-gray-300 font-medium"
+          className="w-full min-h-[60vh] text-sm text-[#E5E7EB] bg-transparent border-none outline-none resize-none leading-relaxed placeholder-[#4B5563] font-medium"
         />
 
         {confirmDelete === editing.id && (
           <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center px-6" onClick={() => setConfirmDelete(null)}>
-            <div className="bg-white rounded-2xl p-6 w-full max-w-xs shadow-xl" onClick={e => e.stopPropagation()}>
-              <p className="text-center text-base font-bold text-gray-900 mb-1">메모 삭제</p>
-              <p className="text-center text-sm text-gray-400 mb-5">삭제하면 되돌릴 수 없어요</p>
+            <div className="bg-[#12121A] border border-[#1F1F2E] rounded-2xl p-6 w-full max-w-xs shadow-xl" onClick={e => e.stopPropagation()}>
+              <p className="text-center text-base font-bold text-[#E5E7EB] mb-1">메모 삭제</p>
+              <p className="text-center text-sm text-[#9CA3AF] mb-5">삭제하면 되돌릴 수 없어요</p>
               <div className="flex gap-3">
-                <button onClick={() => setConfirmDelete(null)} className="flex-1 py-3 rounded-xl border border-gray-200 text-sm font-bold text-gray-500 hover:bg-gray-50">취소</button>
+                <button onClick={() => setConfirmDelete(null)} className="flex-1 py-3 rounded-xl border border-[#1F1F2E] text-sm font-bold text-[#6B7280] hover:bg-[#1A1A2E]">취소</button>
                 <button onClick={() => deleteMemo(editing.id)} className="flex-1 py-3 rounded-xl bg-red-500 text-white text-sm font-bold hover:bg-red-600">삭제</button>
               </div>
             </div>
@@ -184,16 +184,16 @@ export default function MemoPage() {
 
   // List view
   return (
-    <div className="animate-fade-in max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto px-6 pt-8 pb-16">
+    <div className="animate-fade-in max-w-[520px] mx-auto px-6 pt-8 pb-24">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight">메모장</h1>
-          <p className="text-sm text-gray-400 font-medium mt-0.5">생각과 배움을 기록해요</p>
+          <h1 className="text-2xl font-black text-[#E5E7EB] tracking-tight">메모장</h1>
+          <p className="text-sm text-[#9CA3AF] font-medium mt-0.5">생각과 배움을 기록해요</p>
         </div>
         <button
           onClick={openNew}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#8B5CF6] text-white rounded-full text-sm font-bold hover:bg-[#7C3AED] transition-colors active:scale-95 shadow-sm"
+          className="flex items-center gap-1.5 px-4 py-2 gradient-gold-red text-white rounded-full text-sm font-bold transition-colors active:scale-95 shadow-sm"
         >
           <Plus size={15} /> 새 메모
         </button>
@@ -201,7 +201,7 @@ export default function MemoPage() {
 
       {/* Month tabs */}
       <div className="flex items-center gap-2 mb-6">
-        <button onClick={prevMonth} className="p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-400">
+        <button onClick={prevMonth} className="p-1.5 rounded-full hover:bg-[#1A1A2E] transition-colors text-[#9CA3AF]">
           <ChevronLeft size={16} />
         </button>
         <div className="flex gap-2 overflow-x-auto no-scrollbar flex-1">
@@ -213,8 +213,8 @@ export default function MemoPage() {
                 onClick={() => setSelectedMonth(m)}
                 className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
                   m === selectedMonth
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'
+                    ? 'gradient-gold-red text-white'
+                    : 'text-[#9CA3AF] hover:text-[#E5E7EB] hover:bg-[#1A1A2E]'
                 }`}
               >
                 {y}.{mo}
@@ -222,7 +222,7 @@ export default function MemoPage() {
             );
           })}
         </div>
-        <button onClick={nextMonth} className="p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-400">
+        <button onClick={nextMonth} className="p-1.5 rounded-full hover:bg-[#1A1A2E] transition-colors text-[#9CA3AF]">
           <ChevronRight size={16} />
         </button>
       </div>
@@ -231,8 +231,8 @@ export default function MemoPage() {
       {filtered.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-4xl mb-3">📝</p>
-          <p className="text-gray-400 font-medium text-sm">이 달의 메모가 없어요</p>
-          <button onClick={openNew} className="mt-4 px-4 py-2 bg-[#F5F3FF] text-[#8B5CF6] rounded-full text-sm font-bold hover:bg-[#EDE9FE] transition-colors">
+          <p className="text-[#9CA3AF] font-medium text-sm">이 달의 메모가 없어요</p>
+          <button onClick={openNew} className="mt-4 px-4 py-2 bg-[#F59E0B]/15 text-[#F59E0B] rounded-full text-sm font-bold hover:bg-[#F59E0B]/25 transition-colors">
             첫 메모 작성하기
           </button>
         </div>
@@ -245,22 +245,22 @@ export default function MemoPage() {
               className="dashboard-card p-5 cursor-pointer group"
             >
               <div className="flex items-start justify-between gap-2 mb-2">
-                <h3 className="font-bold text-gray-900 text-sm leading-snug truncate flex-1">
+                <h3 className="font-bold text-[#E5E7EB] text-sm leading-snug truncate flex-1">
                   {memo.title || '제목 없음'}
                 </h3>
                 <button
                   onClick={e => { e.stopPropagation(); setConfirmDelete(memo.id); }}
-                  className="opacity-0 group-hover:opacity-100 p-1 rounded-full text-gray-300 hover:text-red-400 hover:bg-red-50 transition-all flex-shrink-0"
+                  className="opacity-0 group-hover:opacity-100 p-1 rounded-full text-[#4B5563] hover:text-red-400 hover:bg-red-500/10 transition-all flex-shrink-0"
                 >
                   <X size={13} />
                 </button>
               </div>
-              <p className="text-xs text-gray-400 leading-relaxed line-clamp-3 mb-3 font-medium">
+              <p className="text-xs text-[#9CA3AF] leading-relaxed line-clamp-3 mb-3 font-medium">
                 {memo.content || '내용 없음'}
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold text-gray-300">{formatDate(memo.date)}</span>
-                <span className="text-[10px] font-medium text-gray-300">{formatUpdated(memo.updatedAt)}</span>
+                <span className="text-[10px] font-bold text-[#4B5563]">{formatDate(memo.date)}</span>
+                <span className="text-[10px] font-medium text-[#4B5563]">{formatUpdated(memo.updatedAt)}</span>
               </div>
             </div>
           ))}
@@ -269,11 +269,11 @@ export default function MemoPage() {
 
       {confirmDelete && (
         <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center px-6" onClick={() => setConfirmDelete(null)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-xs shadow-xl" onClick={e => e.stopPropagation()}>
-            <p className="text-center text-base font-bold text-gray-900 mb-1">메모 삭제</p>
-            <p className="text-center text-sm text-gray-400 mb-5">삭제하면 되돌릴 수 없어요</p>
+          <div className="bg-[#12121A] border border-[#1F1F2E] rounded-2xl p-6 w-full max-w-xs shadow-xl" onClick={e => e.stopPropagation()}>
+            <p className="text-center text-base font-bold text-[#E5E7EB] mb-1">메모 삭제</p>
+            <p className="text-center text-sm text-[#9CA3AF] mb-5">삭제하면 되돌릴 수 없어요</p>
             <div className="flex gap-3">
-              <button onClick={() => setConfirmDelete(null)} className="flex-1 py-3 rounded-xl border border-gray-200 text-sm font-bold text-gray-500 hover:bg-gray-50">취소</button>
+              <button onClick={() => setConfirmDelete(null)} className="flex-1 py-3 rounded-xl border border-[#1F1F2E] text-sm font-bold text-[#6B7280] hover:bg-[#1A1A2E]">취소</button>
               <button onClick={() => deleteMemo(confirmDelete)} className="flex-1 py-3 rounded-xl bg-red-500 text-white text-sm font-bold hover:bg-red-600">삭제</button>
             </div>
           </div>

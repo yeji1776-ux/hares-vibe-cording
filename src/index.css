@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --bg-color: #F9F8FF;
-  --surface-color: #FFFFFF;
-  --primary: #8B5CF6;
-  --primary-light: #F5F3FF;
-  --accent: #F59E0B;
-  --text-main: #1F2937;
-  --text-muted: #6B7280;
-  --border: #F3F4F6;
+  --bg-color: #0A0A0F;
+  --surface-color: #12121A;
+  --surface-hover: #1A1A2E;
+  --primary: #F59E0B;
+  --primary-light: #1A1A2E;
+  --accent: #EF4444;
+  --text-main: #E5E7EB;
+  --text-muted: #9CA3AF;
+  --border: #1F1F2E;
   --radius-xl: 32px;
   --radius-lg: 20px;
-  --shadow-sm: 0 4px 12px rgba(139, 92, 246, 0.03);
-  --shadow-md: 0 12px 30px rgba(139, 92, 246, 0.08);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -37,6 +38,18 @@ body {
   border-color: var(--primary);
 }
 
+/* 골드 → 레드 그라데이션 */
+.gradient-gold-red {
+  background: linear-gradient(135deg, #F59E0B, #EF4444);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #F59E0B, #EF4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -51,6 +64,19 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
